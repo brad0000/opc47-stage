@@ -1,0 +1,23 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: onepracticeservice
+  namespace: berryandco
+spec:
+  chart:
+    spec:
+      chart: charts/onepracticeservice
+      sourceRef:
+        kind: GitRepository
+        name: staging
+  interval: 30s
+  targetNamespace: berryandco
+  values:
+    containerRegistry: opc47acr
+    secret: berryandco
+    connectionString: Server=tcp:opc47sql.database.windows.net,1433;Initial Catalog=berryandco;Persist Security Info=False;User ID=opcadmin;Password=abc123Dcklj@62;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+    instance: notrequired
+    storageAccountName: berryandco
+    storageAccountKey: pEguBhwXFu/Ob1EeRm+/nT+dvqbd5aL995YJ/jWoSkuVTTRCTu2CAyQMvjQpJGLU1xFi1vrsi6aG0YCP5FB4gg==
+    fileShareName: docs01

@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      name: 
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      tolerations:
+      - key: "kubernetes.io/os"
+        operator: "Equal"
+        value: "windows"
+        effect: "NoSchedule"
+      nodeSelector:
+        kubernetes.io/os: windows
+      containers:
+      - name: {{ .Values.containerImage }}
+        image: {{ .Values.containerRegistry }}.azurecr.io/{{ .Values.containerImage }}:{{ .Values.containerVersion }}
+        ports:
+        - containerPort: 9050
+        - containerPort: 9051
+        env:
+        - name: ONEPRACTICE_INSTANCE
+          value: {{ .Values.instance }}
+        - name: ONEPRACTICE_DATABASE_CONNECTIONSTRING
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.secret }}
+              key: connectionstring
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "500Mi"
+          limits:
+            cpu: "1.0"
+            memory: "2Gi"
+        readinessProbe: # is the container ready to receive traffic?
+          httpGet:
+            port: 9051
+            path: /api/helloworld
+#       livenessProbe: # is the container healthy?
+#         httpGet:
+#           port: 3000
+#           path: /healthz
+        volumeMounts:
+          - name: documentstore
+            mountPath: "C:\\ProgramData\\OneLaw"
+      volumes:
+      - name: documentstore
+        azureFile:
+          secretName: {{ .Values.secret }}
+          shareName: {{ .Values.fileShareName }}
+          readOnly: false

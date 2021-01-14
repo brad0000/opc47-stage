@@ -1,0 +1,11 @@
+containerImage: onepracticeservice
+containerVersion: '3.1.0'
+containerRegistry: <mustprovide>
+secret: <mustprovide>
+connectionString: <mustprovide>
+instance: <mustprovide>
+tcpPort: 9050
+httpPort: 9051
+fileShareName: file01
+storageAccountName: saname
+storageAccountKey: sakey
