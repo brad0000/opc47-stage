@@ -7,10 +7,10 @@ metadata:
 spec:
   chart:
     spec:
-      chart: charts/onepracticeservice
+      chart: helm/charts/onepracticeservice
       sourceRef:
         kind: GitRepository
-        name: staging
+        name: opc47-sources
   interval: 30s
   targetNamespace: berryandco
   values:
