@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: GitRepository
         name: opc47-sources
-  interval: 30s
+  interval: 31s
   targetNamespace: berryandco
   values:
     containerRegistry: opc47acr
